@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static final String SQL_CREATE_TABLE = """
-                    CREATE TABLE IF NOT EXISTS `users` (
+                    CREATE TABLE IF NOT EXISTS `jdbc_test`.`users` (
                       `id` BIGINT NOT NULL AUTO_INCREMENT,
                       `name` VARCHAR(45) NOT NULL,
                       `lastName` VARCHAR(45) NOT NULL,
@@ -22,9 +22,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private static final String SQL_GET_ALL_USERS = "SELECT * FROM `jdbc_test`.`users`";
     private static final String SQL_CLEAN_USERS_TABLE = "TRUNCATE TABLE `jdbc_test`.`users`";
 
-    public UserDaoJDBCImpl() {
-
-    }
+    public UserDaoJDBCImpl() {}
 
     @Override
     public void createUsersTable() {
