@@ -44,7 +44,6 @@ public class Util {
         properties.put(Environment.PASS, PASSWORD);
         properties.put(Environment.DIALECT, DIALECT);
         properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        properties.put(Environment.SHOW_SQL, "true");
         configuration.setProperties(properties);
 
         return configuration.buildSessionFactory();
