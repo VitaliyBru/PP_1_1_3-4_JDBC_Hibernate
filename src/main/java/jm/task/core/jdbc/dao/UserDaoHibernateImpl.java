@@ -18,6 +18,7 @@ public class UserDaoHibernateImpl implements UserDao {
                       PRIMARY KEY (`id`))
                     ENGINE = InnoDB""";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS `jdbc_test`.`users`";
+    private static final String SQL_CLEAN_USERS_TABLE = "TRUNCATE TABLE `jdbc_test`.`users`";
 
     private final SessionFactory sessionFactory = Util.getSessionFactory();
 
@@ -52,21 +53,52 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            session.save(new User(name, lastName, age));
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeUserById(long id) {
-
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            User user = session.get(User.class, id);
+            session.delete(user);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        List<User> allUsers = null;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            allUsers = session.createQuery("FROM User").getResultList();
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return allUsers;
     }
 
     @Override
     public void cleanUsersTable() {
-
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            session.createSQLQuery(SQL_CLEAN_USERS_TABLE).executeUpdate();
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
     }
 }
